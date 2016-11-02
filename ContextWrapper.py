@@ -25,9 +25,8 @@ class ContextWrapper(object):
         if self.__wrapObj__ == None:
             while True:
                 with self.__wrapClass__(self.__wrapInitArgs__) as wrapObj:
-                    callMethod = wrapObj.getattr(self.__wrapClass__,
-                                                 methodname)
-                    yield callMethod(args, kwargs)
+                    import pdb; pdb.setTrace()
+                    yield wrapObj.getattr(self.__wrapClass__, methodname)
 
 
     def __getattr__(self, name):
@@ -35,10 +34,9 @@ class ContextWrapper(object):
         # does exist on wrapClass, we need to return a wrapper
         # function that calls __methodwrapper_ with the methodname
         print "called {}.{} with {}".format(self.__class__, '__getattr__', name)
-        if not hasattr(self, name):
-            print "no attr named {}".format(name)
-            return_method = lambda x : self.__methodwrapper__(name, x)
-            print "returning {}".format(return_method)
-            return return_method
-        return getattr(self, name)
+        import pdb; pdb.set_trace()
+        print "no attr named {}".format(name)
+        return_method = lambda *x : self.__methodwrapper__(name, x)
+        print "returning {}".format(return_method)
+        return return_method
 
